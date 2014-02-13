@@ -1,0 +1,22 @@
+Add checkboxes to:
+
+	ipad in portrait only -  "disable standard Tablet (portrait) when being displayed"
+	ipad in landscape only -  "disable standard Tablet (landscape) when being displayed"
+
+
+	iphone5 - "disable standard mobile content when being displayed"
+						"disable standard mobile landscape widget's content when being displayed"
+						"disable standard mobile portrait widget's content when being displayed"
+
+
+
+
+
+
+
+
+
+
+
+
+
