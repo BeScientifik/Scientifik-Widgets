@@ -36,7 +36,8 @@ if ( ! defined( 'WPINC' ) ) {
 
 require_once( plugin_dir_path( __FILE__ ) . 'admin/includes/widgets.php' );
 
-
+foreach ( glob( plugin_dir_path( __FILE__ )."includes/mobile-detect/Mobile_Detect.php" ) as $file )
+include_once $file;
 
 
 /*----------------------------------------------------------------------------*

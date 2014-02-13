@@ -1,20 +1,101 @@
 Add checkboxes to:
 
-	ipad in portrait only -  "disable standard Tablet (portrait) when being displayed"
-	ipad in landscape only -  "disable standard Tablet (landscape) when being displayed"
+	Retina (2x)  -  "Disable iPad in portrait widget when being displayed"
+										"Disable iPad in landscape widget when being displayed"
+										"Disable iPhone 5 widget when being displayed"
+										"Disable the base Mobile widget when being displayed"
+
+	ipad in portrait only -  "Disable standard Tablet (portrait) when being displayed"
+														 "Disable Retina (2x) when being displayed"
+
+	ipad in landscape only -  "Disable standard Tablet (landscape) when being displayed"
+															"Disable Retina (2x) when being displayed"
+
+	Tablet (portrait)  -  "Disable ipad in portrait when being displayed"
+														"Disable Retina (2x) when being displayed"
+	Tablet (landscape)  -  "Disable ipad in landscape when being displayed"
+														"Disable Retina (2x) when being displayed"
 
 
-	iphone5 - "disable standard mobile content when being displayed"
-						"disable standard mobile landscape widget's content when being displayed"
-						"disable standard mobile portrait widget's content when being displayed"
+	Mobile Only - Disable iPhone 5 widget when being displayed
+
+	Mobile (landscape) - Disable iPhone 5 widget when being displayed
+											 Disable the base Mobile widget when being displayed
+
+
+	Tablet Only -  decide after testing...
+
+
+	iphone5 - "Disable the base Mobile widget when being displayed"
+							"Disable Mobile (landscape) widget when being displayed"
+							"Disable Retina (2x) widget when being displayed"
 
 
 
+Find random device media queries such as:
+
+	Galaxy Note:
+	Mom's tablet
+	Mom's Android phone
+
+
+	1600px+ widget?
+	Apple screen widget?
 
 
 
+/*----------------------------------------------------------------------------*
+ * JUNK YARD
+ *----------------------------------------------------------------------------*/
+
+<!-- TEMPLATE -->
+<p>
+  <label for="<?php echo $this->get_field_id( 'FIELD' ); ?>"><?php _e( 'Disable Tablet (portrait) when iPad in portrait','bones'); ?></label><br />
+  <input class="widefat" rows="20" cols="75" type="checkbox" id="<?php echo $this->get_field_id( 'FIELD' ); ?>" name="<?php echo $this->get_field_name( 'FIELD' ); ?> " <?php if ($instance['FIELD'] == 'on'){ echo 'checked'; }?> ></input>
+</p>
 
 
+/*----------------------------------------------------------------------------*
+ * Tablet (standard) ---- MAY NEED TO BE OMITED!!!
+ *----------------------------------------------------------------------------*/
+
+add_action("widgets_init", "load_tablet_only_widget");
+function load_tablet_only_widget(){
+register_widget( 'tablet_only_widget' );
+}
+
+class tablet_only_widget extends WP_Widget {
+  function tablet_only_widget() {
+    /* Widget settings. */
+    $widget_ops = array( 'classname' => 'Tablet Only Content', 'description' => __( 'Tablet sized screens 768px to 1030px','bones') );
+    /* Widget control settings. */
+    $control_ops = array( 'width' => 400, 'height' => 350, 'id_base' => 'tablet_only_widget' );
+    /* Create the widget. */
+    $this->WP_Widget( 'tablet_only_widget', 'Tablet (standard)', $widget_ops, $control_ops );
+  } 
+  function widget( $args, $instance ) {
+    extract( $args );
+    $text = $instance['text'];  
+    /* show the widget content without any headers or wrappers */
+    echo '<div class="unwrapped tablet-only">'.do_shortcode($text).'</div>';  
+  }
+  function update( $new_instance, $old_instance ) {
+    $instance = $old_instance;
+    /* Strip tags (if needed) and update the widget settings. */
+    $instance['text'] = $new_instance['text'];
+    return $instance;
+  }
+  function form( $instance ) {
+    /* Set up some default widget settings. */
+    $defaults = array( 'text' => '' );
+    $instance = wp_parse_args( (array) $instance, $defaults ); ?>
+	    <p>
+	      <label for="<?php echo $this->get_field_id( 'text' ); ?>"><?php _e( 'Text/HTML','bones'); ?></label><br />
+	      <textarea class="widefat" rows="20" cols="75" id="<?php echo $this->get_field_id( 'text' ); ?>" name="<?php echo $this->get_field_name( 'text' ); ?>"><?php echo $instance['text']; ?></textarea>
+	    </p>
+    <?php
+  }
+}
 
 
 
