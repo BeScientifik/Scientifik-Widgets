@@ -1,9 +1,25 @@
-Add checkboxes to:
+
+
+TODO
+
+How do I turn off conflicting sizes?
+
+
+
+
+
+**********************************************************
 
 	Retina (2x)  -  "Disable iPad in portrait widget when being displayed"
 										"Disable iPad in landscape widget when being displayed"
 										"Disable iPhone 5 widget when being displayed"
 										"Disable the base Mobile widget when being displayed"
+
+										Retina is too broad across devices to simply show/hide it.
+										it would require many conditinal checkboxes.
+
+
+
 
 	ipad in portrait only -  "Disable standard Tablet (portrait) when being displayed"
 														 "Disable Retina (2x) when being displayed"
@@ -53,6 +69,82 @@ Find random device media queries such as:
   <label for="<?php echo $this->get_field_id( 'FIELD' ); ?>"><?php _e( 'Disable Tablet (portrait) when iPad in portrait','bones'); ?></label><br />
   <input class="widefat" rows="20" cols="75" type="checkbox" id="<?php echo $this->get_field_id( 'FIELD' ); ?>" name="<?php echo $this->get_field_name( 'FIELD' ); ?> " <?php if ($instance['FIELD'] == 'on'){ echo 'checked'; }?> ></input>
 </p>
+
+
+
+
+/*----------------------------------------------------------------------------*
+ * Retina Only Devices
+ *----------------------------------------------------------------------------*/
+
+add_action("widgets_init", "retina_only_widget");
+
+function retina_only_widget(){
+register_widget( 'retina_text_unwrapped' );
+}
+
+class retina_text_unwrapped extends WP_Widget {
+  function retina_text_unwrapped() {
+    /* Widget settings. */
+    $widget_ops = array( 'classname' => 'Retina Screens', 'description' => __( 'iPhone(4s+), iPad(2+) and many more!','bones') );
+    /* Widget control settings. */
+    $control_ops = array( 'width' => 400, 'height' => 350, 'id_base' => 'retina_text_unwrapped' );
+    /* Create the widget. */
+    $this->WP_Widget( 'retina_text_unwrapped', 'Retina (2x) resolution screens', $widget_ops, $control_ops );
+  } 
+  function widget( $args, $instance ) {
+    extract( $args );
+    $text = $instance['text'];  
+
+    if ($instance['ipad-portrait'] == 'on'){ echo "<style>.scientifik-ipad-portrait-widget{ display:none; }</style>"; }
+    elseif ($instance['ipad-landscape'] == 'on'){ echo "<style>.scientifik-ipad-landscape-widget{ display:none; }</style>"; }
+    elseif ($instance['iphone5'] == 'on'){ echo "<style>.iphone5-only{ display:none; }</style>"; }
+
+    /* show the widget content without any headers or wrappers */
+    echo '<div class="unwrapped retina-only">'.do_shortcode($text).'</div>'; 
+  }
+  function update( $new_instance, $old_instance ) {
+    $instance = $old_instance;
+      /* Strip tags (if needed) and update the widget settings. */
+      $instance['text'] = $new_instance['text'];
+      $instance['ipad-portrait'] = $new_instance['ipad-portrait'];
+      $instance['ipad-landscape'] = $new_instance['ipad-landscape'];
+      $instance['iphone5'] = $new_instance['iphone5'];
+
+    return $instance;
+  }
+  function form( $instance ) {
+    /* Set up some default widget settings. */
+    $defaults = array( 'text' => '' );
+    $instance = wp_parse_args( (array) $instance, $defaults ); ?>
+
+    <p>
+      <label for="<?php echo $this->get_field_id( 'ipad-portrait' ); ?>"><?php _e( 'Disable iPad (portrait) widget when being displayed','bones'); ?></label><br />
+      <input class="widefat" rows="20" cols="75" type="checkbox" id="<?php echo $this->get_field_id( 'ipad-portrait' ); ?>" name="<?php echo $this->get_field_name( 'ipad-portrait' ); ?> " <?php if ($instance['ipad-portrait'] == 'on'){ echo 'checked'; }?> ></input>
+    </p>
+
+    <p>
+      <label for="<?php echo $this->get_field_id( 'ipad-landscape' ); ?>"><?php _e( 'Disable iPad (landscape) widget when being displayed','bones'); ?></label><br />
+      <input class="widefat" rows="20" cols="75" type="checkbox" id="<?php echo $this->get_field_id( 'ipad-landscape' ); ?>" name="<?php echo $this->get_field_name( 'ipad-landscape' ); ?> " <?php if ($instance['ipad-landscape'] == 'on'){ echo 'checked'; }?> ></input>
+    </p>
+
+    <p>
+      <label for="<?php echo $this->get_field_id( 'iphone5' ); ?>"><?php _e( 'Disable iPhone 5 widget when being displayed','bones'); ?></label><br />
+      <input class="widefat" rows="20" cols="75" type="checkbox" id="<?php echo $this->get_field_id( 'iphone5' ); ?>" name="<?php echo $this->get_field_name( 'iphone5' ); ?> " <?php if ($instance['iphone5'] == 'on'){ echo 'checked'; }?> ></input>
+    </p>
+
+    <p>
+      <label for="<?php echo $this->get_field_id( 'text' ); ?>"><?php _e( 'Text/HTML','bones'); ?></label><br />
+      <textarea class="widefat" rows="20" cols="75" id="<?php echo $this->get_field_id( 'text' ); ?>" name="<?php echo $this->get_field_name( 'text' ); ?>"><?php echo $instance['text']; ?></textarea>
+    </p>
+
+    <?php
+  }
+}
+
+
+
+
 
 
 /*----------------------------------------------------------------------------*

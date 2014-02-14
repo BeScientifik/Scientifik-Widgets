@@ -53,15 +53,24 @@ Stylesheet: Widget Styles
 @media only screen and (min-device-width : 320px) and (max-device-width : 640px) and (orientation : landscape){ 
 	.mobile-only { display: none; }
   .phablet { display: none; }
-	.mobile-landscape-only{ display: block; }
+	.mobile-landscape-only { display: block; }
 }
 
 /* iPhone 5 or iPod Touch 5th generation styles */
-@media (device-height: 568px) and (-webkit-min-device-pixel-ratio: 2) {
-	/*.mobile-only { display: none; }*/
+@media (device-height: 568px) and (-webkit-min-device-pixel-ratio: 2) and (orientation : portrait) {
+	.mobile-only { display: none; }
 	.tablet-only { display: none; }
-	.iphone5-only{ display: block; }
-	.retina-only{ display: none; } 
+	.retina-only { display: none; } 
+	.scientifik-iphone5-landscape{ display: none; }
+	.scientifik-iphone5-portrait{ display: block; }
+}
+
+@media (device-height: 568px) and (-webkit-min-device-pixel-ratio: 2) and (orientation : landscape) {
+	.mobile-only { display: none; }
+	.tablet-only { display: none; }
+	.retina-only { display: none; } 
+	.scientifik-iphone5-portrait{ display: none; }
+	.scientifik-iphone5-landscape{ display: block; }
 }
 
 /*

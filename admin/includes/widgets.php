@@ -42,8 +42,9 @@
  *----------------------------------------------------------------------------*/
 
 
+require_once( plugin_dir_path( __FILE__ )."/mobile-detect/Mobile_Detect.php" );
 
-
+// $detect = new Mobile_Detect;
 
 
 /*----------------------------------------------------------------------------*
@@ -64,21 +65,28 @@ class mobile_text_unwrapped extends WP_Widget {
     /* Create the widget. */
     $this->WP_Widget( 'mobile_text_unwrapped', 'Mobile', $widget_ops, $control_ops );
   } 
+
   function widget( $args, $instance ) {
-    extract( $args );
-    $text = $instance['text']; 
+    $detect = new Mobile_Detect;
+    if(! $detect->isiPhone()){
+      extract( $args );
+      $text = $instance['text']; 
 
-    // if checked hide iphone5 widget content
-    if ($instance['disable-iphone5'] == 'on'){ echo "<style>.iphone5-only{ display:none; }</style>"; }
+      // if checked hide iphone5 widget content
+      if ($instance['disable-iphone5'] == 'on'){ echo "<style>.scientifik-iphone5-portrait{ display:none; }</style>"; }
+      elseif ($instance['android'] == 'on') { echo "<style>.scientifik-andriod{ display:none; }</style>"; }
 
-    /* show the widget content without any headers or wrappers */
-    echo '<div class="unwrapped mobile-only">'.do_shortcode($text).'</div>'; 
+      /* show the widget content without any headers or wrappers */
+      echo '<div class="unwrapped mobile-only">'.do_shortcode($text).'</div>'; 
+    }
   }
+
   function update( $new_instance, $old_instance ) {
     $instance = $old_instance;
     /* Strip tags (if needed) and update the widget settings. */
     $instance['text'] = $new_instance['text'];
-    $instance['disable-iphone5'] = $new_instance['disable-iphone5'];
+    $instance['disable-iphone5-portrait'] = $new_instance['disable-iphone5-portrait'];
+    $instance['android'] = $new_instance['android'];
     return $instance;
   }
   function form( $instance ) {
@@ -86,8 +94,12 @@ class mobile_text_unwrapped extends WP_Widget {
     $defaults = array( 'text' => '' );
     $instance = wp_parse_args( (array) $instance, $defaults ); ?>
     <p>
-      <label for="<?php echo $this->get_field_id( 'disable-iphone5' ); ?>"><?php _e( 'Disable iPhone 5 widget when being displayed','bones'); ?></label><br />
-      <input class="widefat" rows="20" cols="75" type="checkbox" id="<?php echo $this->get_field_id( 'disable-iphone5' ); ?>" name="<?php echo $this->get_field_name( 'disable-iphone5' ); ?> " <?php if ($instance['disable-iphone5'] == 'on'){ echo 'checked'; }?> ></input>
+      <label for="<?php echo $this->get_field_id( 'android' ); ?>"><?php _e( 'Disable Android widget when being displayed','bones'); ?></label><br />
+      <input class="widefat" rows="20" cols="75" type="checkbox" id="<?php echo $this->get_field_id( 'android' ); ?>" name="<?php echo $this->get_field_name( 'android' ); ?> " <?php if ($instance['android'] == 'on'){ echo 'checked'; }?> ></input>
+    </p>
+    <p>
+      <label for="<?php echo $this->get_field_id( 'disable-iphone5-portrait' ); ?>"><?php _e( 'Disable iPhone 5 widget when being displayed','bones'); ?></label><br />
+      <input class="widefat" rows="20" cols="75" type="checkbox" id="<?php echo $this->get_field_id( 'disable-iphone5-portrait' ); ?>" name="<?php echo $this->get_field_name( 'disable-iphone5-portrait' ); ?> " <?php if ($instance['disable-iphone5-portrait'] == 'on'){ echo 'checked'; }?> ></input>
     </p>
     <p>
       <label for="<?php echo $this->get_field_id( 'text' ); ?>"><?php _e( 'Text/HTML','bones'); ?></label><br />
@@ -96,7 +108,6 @@ class mobile_text_unwrapped extends WP_Widget {
     <?php
   }
 }
-
 
 
 /*----------------------------------------------------------------------------*
@@ -117,21 +128,28 @@ class mobile_landscape_text_unwrapped extends WP_Widget {
     /* Create the widget. */
     $this->WP_Widget( 'mobile_landscape_text_unwrapped', 'Mobile (landscape)', $widget_ops, $control_ops );
   } 
+
   function widget( $args, $instance ) {
-    extract( $args );
-    $text = $instance['text'];  
+    $detect = new Mobile_Detect;
+    if(! $detect->isiPhone()){
+      extract( $args );
+      $text = $instance['text'];  
 
-    if ($instance['disable-mobile'] == 'on'){ echo "<style>.mobile-only{ display:none; }</style>"; }
-    elseif ($instance['disable-iphone5'] == 'on'){ echo "<style>.iphone5-only{ display:none; }</style>"; }
+      if ($instance['disable-mobile'] == 'on'){ echo "<style>.mobile-only{ display:none; }</style>"; }
+      elseif ($instance['disable-iphone5-portrait'] == 'on'){ echo "<style>.scientifik-iphone5-portrait{ display:none; }</style>"; }
+      elseif ($instance['disable-iphone5-landscape'] == 'on'){ echo "<style>.scientifik-iphone5-landscape{ display:none; }</style>"; }
 
-    /* show the widget content without any headers or wrappers */
-    echo '<div class="unwrapped mobile-landscape-only">'.do_shortcode($text).'</div>';
+      /* show the widget content without any headers or wrappers */
+      echo '<div class="unwrapped mobile-landscape-only">'.do_shortcode($text).'</div>';
+    }
   }
+
   function update( $new_instance, $old_instance ) {
     $instance = $old_instance;
       /* Strip tags (if needed) and update the widget settings. */
       $instance['text'] = $new_instance['text'];
-      $instance['disable-iphone5'] = $new_instance['disable-iphone5'];
+      $instance['disable-iphone5-portrait'] = $new_instance['disable-iphone5-portrait'];
+      $instance['disable-iphone5-landscape'] = $new_instance['disable-iphone5-landscape'];
       $instance['disable-mobile'] = $new_instance['disable-mobile'];
     return $instance;
   }
@@ -144,8 +162,12 @@ class mobile_landscape_text_unwrapped extends WP_Widget {
       <input class="widefat" rows="20" cols="75" type="checkbox" id="<?php echo $this->get_field_id( 'disable-mobile' ); ?>" name="<?php echo $this->get_field_name( 'disable-mobile' ); ?> " <?php if ($instance['disable-mobile'] == 'on'){ echo 'checked'; }?> ></input>
     </p>
     <p>
-      <label for="<?php echo $this->get_field_id( 'disable-iphone5' ); ?>"><?php _e( 'Disable iPhone 5 widget when being displayed','bones'); ?></label><br />
-      <input class="widefat" rows="20" cols="75" type="checkbox" id="<?php echo $this->get_field_id( 'disable-iphone5' ); ?>" name="<?php echo $this->get_field_name( 'disable-iphone5' ); ?> " <?php if ($instance['disable-iphone5'] == 'on'){ echo 'checked'; }?> ></input>
+      <label for="<?php echo $this->get_field_id( 'disable-iphone5-portrait' ); ?>"><?php _e( 'Disable iPhone 5 (postrait) widget when being displayed','bones'); ?></label><br />
+      <input class="widefat" rows="20" cols="75" type="checkbox" id="<?php echo $this->get_field_id( 'disable-iphone5-portrait' ); ?>" name="<?php echo $this->get_field_name( 'disable-iphone5-portrait' ); ?> " <?php if ($instance['disable-iphone5-portrait'] == 'on'){ echo 'checked'; }?> ></input>
+    </p>
+    <p>
+      <label for="<?php echo $this->get_field_id( 'disable-iphone5-landscape' ); ?>"><?php _e( 'Disable iPhone 5 (landscape) widget when being displayed','bones'); ?></label><br />
+      <input class="widefat" rows="20" cols="75" type="checkbox" id="<?php echo $this->get_field_id( 'disable-iphone5-landscape' ); ?>" name="<?php echo $this->get_field_name( 'disable-iphone5-landscape' ); ?> " <?php if ($instance['disable-iphone5-landscape'] == 'on'){ echo 'checked'; }?> ></input>
     </p>
     <p>
       <label for="<?php echo $this->get_field_id( 'text' ); ?>"><?php _e( 'Text/HTML','bones'); ?></label><br />
@@ -158,34 +180,38 @@ class mobile_landscape_text_unwrapped extends WP_Widget {
 
 
 /*----------------------------------------------------------------------------*
- * iPhone 5 or iPod Touch 5th generation 
+ * iPhone 5 or iPod Touch 5th generation (portrait)
  *----------------------------------------------------------------------------*/
 
-add_action("widgets_init", "load_iphone5_only_widget");
-function load_iphone5_only_widget(){
-register_widget( 'iphone5_text_unwrapped' );
+add_action("widgets_init", "load_iphone5_portrait_widget");
+function load_iphone5_portrait_widget(){
+register_widget( 'iphone5_portrait_unwrapped' );
 }
 
-class iphone5_text_unwrapped extends WP_Widget {
-  function iphone5_text_unwrapped() {
+class iphone5_portrait_unwrapped extends WP_Widget {
+  function iphone5_portrait_unwrapped() {
     /* Widget settings. */
     $widget_ops = array( 'classname' => 'Mobile Landscape Only Content', 'description' => __( 'iPhone 5 or iPod Touch 5th generation','bones') );
     /* Widget control settings. */
-    $control_ops = array( 'width' => 400, 'height' => 350, 'id_base' => 'iphone5_text_unwrapped' );
+    $control_ops = array( 'width' => 400, 'height' => 350, 'id_base' => 'iphone5_portrait_unwrapped' );
     /* Create the widget. */
-    $this->WP_Widget( 'iphone5_text_unwrapped', 'iPhone 5', $widget_ops, $control_ops );
+    $this->WP_Widget( 'iphone5_portrait_unwrapped', 'iPhone 5 (portrait)', $widget_ops, $control_ops );
   } 
+
   function widget( $args, $instance ) {
-    extract( $args );
-    $text = $instance['text'];  
+    $detect = new Mobile_Detect;
+    if($detect->isiPhone()){
+      extract( $args );
+      $text = $instance['text'];  
 
-    if ($instance['disable-mobile'] == 'on'){ echo "<style>.mobile-only{ display:none; }</style>"; }
-    elseif ($instance['disable-mobile-landscape'] == 'on'){ echo "<style>.mobile-landscape-only{ display:none; }</style>"; }
-    elseif ($instance['retina'] == 'on'){ echo "<style>.retina-only{ display:none; }</style>"; }
+      if ($instance['disable-mobile'] == 'on'){ echo "<style>.mobile-only{ display:none; }</style>"; }
+      elseif ($instance['disable-mobile-landscape'] == 'on'){ echo "<style>.mobile-landscape-only{ display:none; }</style>"; }
+      //elseif ($instance['retina'] == 'on'){ echo "<style>.retina-only{ display:none; }</style>"; }
 
-    /* show the widget content without any headers or wrappers */
-    echo '<div class="unwrapped iphone5-only">'.do_shortcode($text).'</div>';  
+      echo '<div class="unwrapped scientifik-iphone5-portrait">'.do_shortcode($text).'</div>';  
+    }
   }
+
   function update( $new_instance, $old_instance ) {
     $instance = $old_instance;
       /* Strip tags (if needed) and update the widget settings. */
@@ -208,8 +234,65 @@ class iphone5_text_unwrapped extends WP_Widget {
       <input class="widefat" rows="20" cols="75" type="checkbox" id="<?php echo $this->get_field_id( 'disable-mobile-landscape' ); ?>" name="<?php echo $this->get_field_name( 'disable-mobile-landscape' ); ?> " <?php if ($instance['disable-mobile-landscape'] == 'on'){ echo 'checked'; }?> ></input>
     </p>
     <p>
-      <label for="<?php echo $this->get_field_id( 'retina' ); ?>"><?php _e( 'Disable Retina (2x) widget when being displayed','bones'); ?></label><br />
-      <input class="widefat" rows="20" cols="75" type="checkbox" id="<?php echo $this->get_field_id( 'retina' ); ?>" name="<?php echo $this->get_field_name( 'retina' ); ?> " <?php if ($instance['retina'] == 'on'){ echo 'checked'; }?> ></input>
+      <label for="<?php echo $this->get_field_id( 'text' ); ?>"><?php _e( 'Text/HTML','bones'); ?></label><br />
+      <textarea class="widefat" rows="20" cols="75" id="<?php echo $this->get_field_id( 'text' ); ?>" name="<?php echo $this->get_field_name( 'text' ); ?>"><?php echo $instance['text']; ?></textarea>
+    </p>
+    <?php
+  }
+}
+
+/*----------------------------------------------------------------------------*
+ * iPhone 5 or iPod Touch 5th generation landscape
+ *----------------------------------------------------------------------------*/
+
+add_action("widgets_init", "load_iphone5_landscape_widget");
+function load_iphone5_landscape_widget(){
+register_widget( 'iphone5_landscape_unwrapped' );
+}
+
+class iphone5_landscape_unwrapped extends WP_Widget {
+  function iphone5_landscape_unwrapped() {
+    /* Widget settings. */
+    $widget_ops = array( 'classname' => 'iPhone Landscape', 'description' => __( 'iPhone 5 or iPod Touch 5th generation landscape','bones') );
+    /* Widget control settings. */
+    $control_ops = array( 'width' => 400, 'height' => 350, 'id_base' => 'iphone5_landscape_unwrapped' );
+    /* Create the widget. */
+    $this->WP_Widget( 'iphone5_landscape_unwrapped', 'iPhone 5 (landscape)', $widget_ops, $control_ops );
+  } 
+
+  function widget( $args, $instance ) {
+    $detect = new Mobile_Detect;
+    if($detect->isiPhone()){
+      extract( $args );
+      $text = $instance['text'];  
+
+      if ($instance['disable-mobile'] == 'on'){ echo "<style>.mobile-only{ display:none; }</style>"; }
+      elseif ($instance['disable-mobile-landscape'] == 'on'){ echo "<style>.mobile-landscape-only{ display:none; }</style>"; }
+      //elseif ($instance['retina'] == 'on'){ echo "<style>.retina-only{ display:none; }</style>"; }
+
+      echo '<div class="unwrapped scientifik-iphone5-landscape">'.do_shortcode($text).'</div>';  
+    }
+  }
+
+  function update( $new_instance, $old_instance ) {
+    $instance = $old_instance;
+      $instance['text'] = $new_instance['text'];
+      $instance['disable-mobile'] = $new_instance['disable-mobile'];
+      $instance['disable-mobile-landscape'] = $new_instance['disable-mobile-landscape'];
+      $instance['retina'] = $new_instance['retina'];
+    return $instance;
+  }
+  function form( $instance ) {
+    /* Set up some default widget settings. */
+    $defaults = array( 'text' => '' );
+    $instance = wp_parse_args( (array) $instance, $defaults ); ?>
+    <p>
+      <label for="<?php echo $this->get_field_id( 'disable-mobile' ); ?>"><?php _e( 'Disable the Mobile widget when being displayed','bones'); ?></label><br />
+      <input class="widefat" rows="20" cols="75" type="checkbox" id="<?php echo $this->get_field_id( 'disable-mobile' ); ?>" name="<?php echo $this->get_field_name( 'disable-mobile' ); ?> " <?php if ($instance['disable-mobile'] == 'on'){ echo 'checked'; }?> ></input>
+    </p>
+    <p>
+      <label for="<?php echo $this->get_field_id( 'disable-mobile-landscape' ); ?>"><?php _e( 'Disable Mobile (landscape) widget when being displayed','bones'); ?></label><br />
+      <input class="widefat" rows="20" cols="75" type="checkbox" id="<?php echo $this->get_field_id( 'disable-mobile-landscape' ); ?>" name="<?php echo $this->get_field_name( 'disable-mobile-landscape' ); ?> " <?php if ($instance['disable-mobile-landscape'] == 'on'){ echo 'checked'; }?> ></input>
     </p>
     <p>
       <label for="<?php echo $this->get_field_id( 'text' ); ?>"><?php _e( 'Text/HTML','bones'); ?></label><br />
@@ -218,7 +301,6 @@ class iphone5_text_unwrapped extends WP_Widget {
     <?php
   }
 }
-
 
 
 /*----------------------------------------------------------------------------*
@@ -282,34 +364,39 @@ class tablet_portrait_text_unwrapped extends WP_Widget {
     /* Create the widget. */
     $this->WP_Widget( 'tablet_portrait_text_unwrapped', 'Tablet (portrait)', $widget_ops, $control_ops );
   } 
-  function widget( $args, $instance ) {
-    extract( $args );
-    $text = $instance['text']; 
 
-    if ($instance['disable-ipad-portrait'] == 'on'){ echo "<style>.scientifik-ipad-portrait-widget{ display:none; }</style>"; } 
-    elseif ($instance['retina'] == 'on') { echo "<style>.retina-only{ display:none; }</style>"; }
+    function widget( $args, $instance ) {
 
-    /* show the widget content without any headers or wrappers */
-    echo '<div class="unwrapped tablet-portrait">'.do_shortcode($text).'</div>';
+      $detect = new Mobile_Detect;
+      if($detect->isTablet() && ! $detect->isiPad()){    
+        extract( $args );
+        $text = $instance['text']; 
 
+          if ($instance['disable-ipad-portrait'] == 'on'){ echo "<style>.scientifik-ipad-portrait-widget{ display:none; }</style>"; } 
+          elseif ($instance['retina'] == 'on') { echo "<style>.retina-only{ display:none; }</style>"; }
+          elseif ($instance['android'] == 'on') { echo "<style>.scientifik-andriod{ display:none; }</style>"; }
 
+        /* show the widget content without any headers or wrappers */
+        echo '<div class="unwrapped tablet-portrait">'.do_shortcode($text).'</div>';
+      }
+    }
 
-
-  }
   function update( $new_instance, $old_instance ) {
     $instance = $old_instance;
-      /* Strip tags (if needed) and update the widget settings. */
       $instance['text'] = $new_instance['text'];
       $instance['retina'] = $new_instance['retina'];
       $instance['disable-ipad-portrait'] = $new_instance['disable-ipad-portrait'];
-
+      $instance['android'] = $new_instance['android'];
     return $instance;
   }
   function form( $instance ) {
     /* Set up some default widget settings. */
     $defaults = array( 'text' => '' );
     $instance = wp_parse_args( (array) $instance, $defaults ); ?>
-
+    <p>
+      <label for="<?php echo $this->get_field_id( 'android' ); ?>"><?php _e( 'Disable the Android widget when being displayed','bones'); ?></label><br />
+      <input class="widefat" rows="20" cols="75" type="checkbox" id="<?php echo $this->get_field_id( 'android' ); ?>" name="<?php echo $this->get_field_name( 'android' ); ?> " <?php if ($instance['android'] == 'on'){ echo 'checked'; }?> ></input>
+    </p>
     <p>
       <label for="<?php echo $this->get_field_id( 'disable-ipad-portrait' ); ?>"><?php _e( 'Disable iPad in portrait widget when being displayed','bones'); ?></label><br />
       <input class="widefat" rows="20" cols="75" type="checkbox" id="<?php echo $this->get_field_id( 'disable-ipad-portrait' ); ?>" name="<?php echo $this->get_field_name( 'disable-ipad-portrait' ); ?> " <?php if ($instance['disable-ipad-portrait'] == 'on'){ echo 'checked'; }?> ></input>
@@ -346,16 +433,20 @@ class tablet_landscape_text_unwrapped extends WP_Widget {
     /* Create the widget. */
     $this->WP_Widget( 'tablet_landscape_text_unwrapped', 'Tablet (landscape)', $widget_ops, $control_ops );
   } 
+
   function widget( $args, $instance ) {
-    extract( $args );
-    $text = $instance['text'];  
+    $detect = new Mobile_Detect;
+    if($detect->isTablet() && ! $detect->isiPad()){
+      extract( $args );
+      $text = $instance['text'];  
 
-    if ($instance['disable-ipad-landscape'] == 'on'){ echo "<style>.scientifik-ipad-landscape-widget{ display:none; }</style>"; } 
-    elseif ($instance['retina'] == 'on') { echo "<style>.retina-only{ display:none; }</style>"; }
+      if ($instance['disable-ipad-landscape'] == 'on'){ echo "<style>.scientifik-ipad-landscape-widget{ display:none; }</style>"; } 
+      elseif ($instance['retina'] == 'on') { echo "<style>.retina-only{ display:none; }</style>"; }
 
-    /* show the widget content without any headers or wrappers */
-    echo '<div class="unwrapped tablet-landscape">'.do_shortcode($text).'</div>';  
+      echo '<div class="unwrapped tablet-landscape">'.do_shortcode($text).'</div>';  
+    }
   }
+
   function update( $new_instance, $old_instance ) {
     $instance = $old_instance;
       /* Strip tags (if needed) and update the widget settings. */
@@ -401,15 +492,20 @@ class ipad_portrait_text_unwrapped extends WP_Widget {
     /* Create the widget. */
     $this->WP_Widget( 'ipad_portrait_text_unwrapped', 'iPad (portrait)', $widget_ops, $control_ops );
   } 
+
   function widget( $args, $instance ) {
-    extract( $args );
-    $text = $instance['text'];  
+    $detect = new Mobile_Detect;
+    if($detect->isTablet() && $detect->isiOS()){
+      extract( $args );
+      $text = $instance['text'];  
 
-    if ($instance['disable-tablet-portrait'] == 'on'){ echo "<style>.tablet-portrait{ display:none; }</style>"; } 
-    if ($instance['retina'] == 'on') { echo "<style>.retina-only{ display:none; }</style>"; }
+      if ($instance['disable-tablet-portrait'] == 'on'){ echo "<style>.tablet-portrait{ display:none; }</style>"; } 
+      // if ($instance['retina'] == 'on') { echo "<style>.retina-only{ display:none; }</style>"; }
 
-    echo '<div class="unwrapped scientifik-ipad-portrait-widget">'.do_shortcode($text).'</div>';  
+      echo '<div class="unwrapped scientifik-ipad-portrait-widget">'.do_shortcode($text).'</div>';  
+    }
   }
+
   function update( $new_instance, $old_instance ) {
     $instance = $old_instance;
 	    /* Strip tags (if needed) and update the widget settings. */
@@ -456,15 +552,20 @@ class ipad_landscape_text_unwrapped extends WP_Widget {
     /* Create the widget. */
     $this->WP_Widget( 'ipad_landscape_text_unwrapped', 'iPad (landscape)', $widget_ops, $control_ops );
   } 
+
   function widget( $args, $instance ) {
-    extract( $args );
-    $text = $instance['text'];  
+    $detect = new Mobile_Detect;
+    if($detect->isiPad()){
+      extract( $args );
+      $text = $instance['text'];  
 
-    if ($instance['disable-tablet-landscape'] == 'on'){ echo "<style>.tablet-landscape{ display:none; }</style>"; }
-    if ($instance['retina'] == 'on'){ echo "<style>.retina-only{ display:none; }</style>"; }
+      if ($instance['disable-tablet-landscape'] == 'on'){ echo "<style>.tablet-landscape{ display:none; }</style>"; }
+      // if ($instance['retina'] == 'on'){ echo "<style>.retina-only{ display:none; }</style>"; }
 
-    echo '<div class="unwrapped scientifik-ipad-landscape-widget">'.do_shortcode($text).'</div>';  
+      echo '<div class="unwrapped scientifik-ipad-landscape-widget">'.do_shortcode($text).'</div>';  
+    }
   }
+
   function update( $new_instance, $old_instance ) {
     $instance = $old_instance;
 	    /* Strip tags (if needed) and update the widget settings. */
@@ -489,75 +590,6 @@ class ipad_landscape_text_unwrapped extends WP_Widget {
     	<label for="<?php echo $this->get_field_id( 'text' ); ?>"><?php _e( 'Text/HTML','bones'); ?></label><br />
       <textarea class="widefat" rows="20" cols="75" id="<?php echo $this->get_field_id( 'text' ); ?>" name="<?php echo $this->get_field_name( 'text' ); ?>"><?php echo $instance['text']; ?></textarea>
   	</p>
-    <?php
-  }
-}
-
-/*----------------------------------------------------------------------------*
- * Retina Only Devices
- *----------------------------------------------------------------------------*/
-
-add_action("widgets_init", "retina_only_widget");
-
-function retina_only_widget(){
-register_widget( 'retina_text_unwrapped' );
-}
-
-class retina_text_unwrapped extends WP_Widget {
-  function retina_text_unwrapped() {
-    /* Widget settings. */
-    $widget_ops = array( 'classname' => 'Retina Screens', 'description' => __( 'iPhone(4s+), iPad(2+) and many more!','bones') );
-    /* Widget control settings. */
-    $control_ops = array( 'width' => 400, 'height' => 350, 'id_base' => 'retina_text_unwrapped' );
-    /* Create the widget. */
-    $this->WP_Widget( 'retina_text_unwrapped', 'Retina (2x) resolution screens', $widget_ops, $control_ops );
-  } 
-  function widget( $args, $instance ) {
-    extract( $args );
-    $text = $instance['text'];  
-
-    if ($instance['ipad-portrait'] == 'on'){ echo "<style>.scientifik-ipad-portrait-widget{ display:none; }</style>"; }
-    elseif ($instance['ipad-landscape'] == 'on'){ echo "<style>.scientifik-ipad-landscape-widget{ display:none; }</style>"; }
-    elseif ($instance['iphone5'] == 'on'){ echo "<style>.iphone5-only{ display:none; }</style>"; }
-
-    /* show the widget content without any headers or wrappers */
-    echo '<div class="unwrapped retina-only">'.do_shortcode($text).'</div>'; 
-  }
-  function update( $new_instance, $old_instance ) {
-    $instance = $old_instance;
-      /* Strip tags (if needed) and update the widget settings. */
-      $instance['text'] = $new_instance['text'];
-      $instance['ipad-portrait'] = $new_instance['ipad-portrait'];
-      $instance['ipad-landscape'] = $new_instance['ipad-landscape'];
-      $instance['iphone5'] = $new_instance['iphone5'];
-
-    return $instance;
-  }
-  function form( $instance ) {
-    /* Set up some default widget settings. */
-    $defaults = array( 'text' => '' );
-    $instance = wp_parse_args( (array) $instance, $defaults ); ?>
-
-    <p>
-      <label for="<?php echo $this->get_field_id( 'ipad-portrait' ); ?>"><?php _e( 'Disable iPad (portrait) widget when being displayed','bones'); ?></label><br />
-      <input class="widefat" rows="20" cols="75" type="checkbox" id="<?php echo $this->get_field_id( 'ipad-portrait' ); ?>" name="<?php echo $this->get_field_name( 'ipad-portrait' ); ?> " <?php if ($instance['ipad-portrait'] == 'on'){ echo 'checked'; }?> ></input>
-    </p>
-
-    <p>
-      <label for="<?php echo $this->get_field_id( 'ipad-landscape' ); ?>"><?php _e( 'Disable iPad (landscape) widget when being displayed','bones'); ?></label><br />
-      <input class="widefat" rows="20" cols="75" type="checkbox" id="<?php echo $this->get_field_id( 'ipad-landscape' ); ?>" name="<?php echo $this->get_field_name( 'ipad-landscape' ); ?> " <?php if ($instance['ipad-landscape'] == 'on'){ echo 'checked'; }?> ></input>
-    </p>
-
-    <p>
-      <label for="<?php echo $this->get_field_id( 'iphone5' ); ?>"><?php _e( 'Disable iPhone 5 widget when being displayed','bones'); ?></label><br />
-      <input class="widefat" rows="20" cols="75" type="checkbox" id="<?php echo $this->get_field_id( 'iphone5' ); ?>" name="<?php echo $this->get_field_name( 'iphone5' ); ?> " <?php if ($instance['iphone5'] == 'on'){ echo 'checked'; }?> ></input>
-    </p>
-
-    <p>
-      <label for="<?php echo $this->get_field_id( 'text' ); ?>"><?php _e( 'Text/HTML','bones'); ?></label><br />
-      <textarea class="widefat" rows="20" cols="75" id="<?php echo $this->get_field_id( 'text' ); ?>" name="<?php echo $this->get_field_name( 'text' ); ?>"><?php echo $instance['text']; ?></textarea>
-    </p>
-
     <?php
   }
 }
@@ -626,6 +658,7 @@ class large_screen_text_unwrapped extends WP_Widget {
   function widget( $args, $instance ) {
     extract( $args );
     $text = $instance['text'];  
+
     /* show the widget content without any headers or wrappers */
     echo '<div class="unwrapped large-screen-widget">'.do_shortcode($text).'</div>';  
   }
@@ -646,6 +679,87 @@ class large_screen_text_unwrapped extends WP_Widget {
     <?php
   }
 }
+
+
+
+
+
+
+/*----------------------------------------------------------------------------*
+ * Android Devices
+ *----------------------------------------------------------------------------*/
+
+add_action("widgets_init", "android_widget");
+function android_widget(){
+  register_widget( 'android_widget' );
+}
+
+class android_widget extends WP_Widget {
+  function android_widget() {
+    /* Widget settings. */
+    $widget_ops = array( 'classname' => 'Android', 'description' => __( 'Displays on native Android devices','bones') );
+    /* Widget control settings. */
+    $control_ops = array( 'width' => 400, 'height' => 350, 'id_base' => 'android_widget' );
+    /* Create the widget. */
+    $this->WP_Widget( 'android_widget', 'Android', $widget_ops, $control_ops );
+  } 
+
+  function widget( $args, $instance ) {
+    $detect = new Mobile_Detect;
+    if($detect->isAndroidOS()){
+      extract( $args );
+      $text = $instance['text'];  
+
+      if ($instance['disable-mobile'] == 'on'){ echo "<style>.mobile-only{ display:none; }</style>"; }
+
+      echo '<div class="unwrapped scientifik-andriod">'.do_shortcode($text).'</div>';  
+    }
+  }
+
+  function update( $new_instance, $old_instance ) {
+    $instance = $old_instance;
+      /* Strip tags (if needed) and update the widget settings. */
+      $instance['text'] = $new_instance['text'];
+      $instance['disable-mobile'] = $new_instance['disable-mobile'];
+    return $instance;
+  }
+  function form( $instance ) {
+    /* Set up some default widget settings. */
+    $defaults = array( 'text' => '' );
+    $instance = wp_parse_args( (array) $instance, $defaults ); ?>
+    <p>
+      <label for="<?php echo $this->get_field_id( 'disable-mobile' ); ?>"><?php _e( 'Disable the Mobile widget when being displayed','bones'); ?></label><br />
+      <input class="widefat" rows="20" cols="75" type="checkbox" id="<?php echo $this->get_field_id( 'disable-mobile' ); ?>" name="<?php echo $this->get_field_name( 'disable-mobile' ); ?> " <?php if ($instance['disable-mobile'] == 'on'){ echo 'checked'; }?> ></input>
+    </p>
+    <p>
+      <label for="<?php echo $this->get_field_id( 'text' ); ?>"><?php _e( 'Text/HTML','bones'); ?></label><br />
+      <textarea class="widefat" rows="20" cols="75" id="<?php echo $this->get_field_id( 'text' ); ?>" name="<?php echo $this->get_field_name( 'text' ); ?>"><?php echo $instance['text']; ?></textarea>
+    </p>
+    <?php
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*----------------------------------------------------------------------------*
