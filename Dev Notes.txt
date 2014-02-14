@@ -1,8 +1,15 @@
-
-
 TODO
 
 How do I turn off conflicting sizes?
+
+http://demo.mobiledetect.net/
+https://code.google.com/p/php-mobile-detect/wiki/Mobile_Detect
+https://github.com/serbanghita/Mobile-Detect
+
+
+
+ADD:
+  
 
 
 
@@ -10,14 +17,18 @@ How do I turn off conflicting sizes?
 
 **********************************************************
 
+  Android - This will display on a very large number of devices. Make sure to test accordingly or don't use at all.
+
+
+
 	Retina (2x)  -  "Disable iPad in portrait widget when being displayed"
-										"Disable iPad in landscape widget when being displayed"
-										"Disable iPhone 5 widget when being displayed"
-										"Disable the base Mobile widget when being displayed"
+									"Disable iPad in landscape widget when being displayed"
+									"Disable iPhone 5 widget when being displayed"
+									"Disable the base Mobile widget when being displayed"
 
 										Retina is too broad across devices to simply show/hide it.
 										it would require many conditinal checkboxes.
-
+                    Who and why would you need Retina anyways?
 
 
 

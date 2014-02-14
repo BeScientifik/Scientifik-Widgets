@@ -6,8 +6,8 @@ Stylesheet: Widget Styles
 *******************************************************************/
 .mobile-only { display: block; }
 
+
 .phablet { display: none; } 
-.tablet-only { display: none; }
 .desktop-only { display: none; }
 .large-screen-widget { display: none; }
 .mobile-landscape-only { display: none; }
@@ -15,13 +15,18 @@ Stylesheet: Widget Styles
 .iphone5-only { display: none; }
 .retina-only { display: none; }
 .large-screen-only { display: none; }
+
+/*.scientifik-windows-phone { display: none; }*/
+
 .tablet-landscape { display: none; }
 .tablet-portrait { display: none; }
+
 .print-query { display: none; }
 .scientifik-ipad-portrait-widget { display: none; }
 .scientifik-ipad-landscape-widget { display: none; }
 
-
+/*.scientifik-generic-tablet{ display: none; }*/
+/*.scientifik-android{ display:none; }*/
 
 /* Phablet query 481px / 30.063em */
 @media only screen and (min-width: 30.063em){
@@ -60,7 +65,6 @@ Stylesheet: Widget Styles
 @media (device-height: 568px) and (-webkit-min-device-pixel-ratio: 2) and (orientation : portrait) {
 	.mobile-only { display: none; }
 	.tablet-only { display: none; }
-	.retina-only { display: none; } 
 	.scientifik-iphone5-landscape{ display: none; }
 	.scientifik-iphone5-portrait{ display: block; }
 }
@@ -68,32 +72,9 @@ Stylesheet: Widget Styles
 @media (device-height: 568px) and (-webkit-min-device-pixel-ratio: 2) and (orientation : landscape) {
 	.mobile-only { display: none; }
 	.tablet-only { display: none; }
-	.retina-only { display: none; } 
 	.scientifik-iphone5-portrait{ display: none; }
 	.scientifik-iphone5-landscape{ display: block; }
 }
-
-/*
-RETINA (2x RESOLUTION DEVICES)
-This applies to the retina iPhone (4s) and iPad (2,3) along with
-other displays with a 2x resolution. You can also create a media
-query for retina AND a certain size if you want. Go Nuts.
-*/
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
-	.retina-only{ display: block; }
-}
-	/*ipad portrait*/
-	@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) and (-webkit-min-device-pixel-ratio: 2) {
-		.iphone5-only{ display: none; }
-		.scientifik-ipad-portrait-widget{ display: block; }
-	}
-	/*ipad landscape*/
-	@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) and (-webkit-min-device-pixel-ratio: 2) {
-		.iphone5-only{ display: none; }
-		.scientifik-ipad-landscape-widget{ display: block; }
-	}
-
-
 
 /* tablet (landscape) */
 @media only screen and (min-device-width : 48.000em) and (max-device-width : 64.000em) and (orientation : landscape) {
@@ -103,5 +84,28 @@ query for retina AND a certain size if you want. Go Nuts.
 @media only screen and (min-device-width : 48.000em) and (max-device-width : 63.938em) and (orientation : portrait) { 
 	.tablet-portrait{ display: block; }
 }
+
+
+/*
+RETINA (2x RESOLUTION DEVICES)
+This applies to the retina iPhone (4s) and iPad (2,3) along with
+other displays with a 2x resolution. You can also create a media
+query for retina AND a certain size if you want. Go Nuts.
+*/
+/*@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+	.retina-only{ display: block; }
+}*/
+
+/*ipad portrait*/
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) and (-webkit-min-device-pixel-ratio: 2) {
+	.iphone5-only{ display: none; }
+	.scientifik-ipad-portrait-widget{ display: block; }
+}
+/*ipad landscape*/
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) and (-webkit-min-device-pixel-ratio: 2) {
+	.iphone5-only{ display: none; }
+	.scientifik-ipad-landscape-widget{ display: block; }
+}
+
 
 @media print { .print-query{ display: block; } }
