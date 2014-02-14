@@ -4,7 +4,7 @@
 __Many device specific widgets for your WordPress website__
 
 We've set out to create an extensive list of WordPress widgets that load specifically on their designated devices. 
-With a mix of PHP conditionals by __[Mobile-Detect](https://github.com/serbanghita/Mobile-Detect)__ and media queries we are much closer to a realy thorough, awesome widget pack that will display on the most popular target devices.
+With a mix of PHP conditionals by __[Mobile-Detect](https://github.com/serbanghita/Mobile-Detect)__ and media queries we are much closer to a really thorough, awesome widget pack that will display on the most popular target devices.
 
 
 ##License
