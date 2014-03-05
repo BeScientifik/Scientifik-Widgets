@@ -1,7 +1,5 @@
 TODO
 
-How do I turn off conflicting sizes?
-
 http://demo.mobiledetect.net/
 https://code.google.com/p/php-mobile-detect/wiki/Mobile_Detect
 https://github.com/serbanghita/Mobile-Detect
@@ -10,64 +8,52 @@ https://github.com/serbanghita/Mobile-Detect
 
 ADD:
   
+Find random device media queries such as:
 
+	Galaxy Note:
+	Samgsung tablet
+	Samgsung's Android phone
+
+	1600px+ widget?
+	Thunderbolt widget?
 
 
 
 
 **********************************************************
 
-  Android - This will display on a very large number of devices. Make sure to test accordingly or don't use at all.
+Android - This will display on a very large number of devices. Make sure to test accordingly or don't use at all.
 
 
 
-	Retina (2x)  -  "Disable iPad in portrait widget when being displayed"
-									"Disable iPad in landscape widget when being displayed"
-									"Disable iPhone 5 widget when being displayed"
-									"Disable the base Mobile widget when being displayed"
+Retina (2x)  -  "Disable iPad in portrait widget when being displayed"
+	"Disable iPad in landscape widget when being displayed"
+	"Disable iPhone 5 widget when being displayed"
+	"Disable the base Mobile widget when being displayed"
 
-										Retina is too broad across devices to simply show/hide it.
-										it would require many conditinal checkboxes.
-                    Who and why would you need Retina anyways?
-
-
-
-	ipad in portrait only -  "Disable standard Tablet (portrait) when being displayed"
-														 "Disable Retina (2x) when being displayed"
-
-	ipad in landscape only -  "Disable standard Tablet (landscape) when being displayed"
-															"Disable Retina (2x) when being displayed"
-
-	Tablet (portrait)  -  "Disable ipad in portrait when being displayed"
-														"Disable Retina (2x) when being displayed"
-	Tablet (landscape)  -  "Disable ipad in landscape when being displayed"
-														"Disable Retina (2x) when being displayed"
-
-
-	Mobile Only - Disable iPhone 5 widget when being displayed
-
-	Mobile (landscape) - Disable iPhone 5 widget when being displayed
-											 Disable the base Mobile widget when being displayed
-
-
-	Tablet Only -  decide after testing...
-
-
-	iphone5 - "Disable the base Mobile widget when being displayed"
-							"Disable Mobile (landscape) widget when being displayed"
-							"Disable Retina (2x) widget when being displayed"
+	Retina is too broad across devices to simply show/hide it.
+	it would require many conditinal checkboxes.
 
 
 
-Find random device media queries such as:
 
-	Galaxy Note:
-	Mom's tablet
-	Mom's Android phone
+ipad in portrait only -  "Disable standard Tablet (portrait) when being displayed"
+ipad in landscape only -  "Disable standard Tablet (landscape) when being displayed"															"Disable Retina (2x) when being displayed"
+
+Tablet (portrait)  -  "Disable ipad in portrait when being displayed"
+Tablet (landscape)  -  "Disable ipad in landscape when being displayed"
+
+Mobile Only - Disable iPhone 5 widget when being displayed
+Mobile (landscape) - Disable iPhone 5 widget when being displayed
+Disable the base Mobile widget when being displayed
 
 
-	1600px+ widget?
-	Apple screen widget?
+Tablet Only -  decide after testing...
+iphone5 - "Disable the base Mobile widget when being displayed"
+"Disable Mobile (landscape) widget when being displayed"
+
+
+
 
 
 
