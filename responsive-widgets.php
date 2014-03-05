@@ -12,9 +12,9 @@
  * @copyright 2014 Scientifik
  *
  * @wordpress-plugin
- * Plugin Name:       Scientifik Widgets
+ * Plugin Name:       Responsive Widgets
  * Plugin URI:        http://scientifik.com
- * Description:       Widget pack adaptive to every common screen size
+ * Description:       Widget pack adaptive to every common screen size and then some.
  * Version:           1.0.0
  * Author:            Ben Racicot
  * Author URI:        http://scientifik.com

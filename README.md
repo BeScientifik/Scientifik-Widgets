@@ -1,4 +1,4 @@
-#Scientifik Widgets
+#Responsive Widgets - By Scientifik
 
 __Many device specific widgets for your WordPress website__
 
